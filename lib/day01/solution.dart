@@ -1,22 +1,38 @@
-import 'package:advent_of_code_2022/commons/read_file_as.dart';
+import 'dart:io';
 
 class Day01 {
-  static int soltion01() {
-    var text = readFileAsText('lib/day01/input.txt');
-    List<int> sum = [];
-    List<int> tempList = [];
-    List<String> stringList = text.split('\n');
-    for (var item in stringList) {
+  static List<int> _computeSums() {
+    var text = File('lib/day01/input.txt').readAsStringSync();
+
+    List<int> sums = [];
+    List<int> currentNumbers = [];
+    for (var item in text.split('\n')) {
       if (item.isEmpty) {
-        sum.add(tempList.reduce((a, b) => a + b));
-        tempList = [];
+        sums.add(currentNumbers.reduce((a, b) => a + b));
+        currentNumbers.clear();
       } else {
-        tempList.add(int.parse(item));
+        currentNumbers.add(int.parse(item));
       }
     }
-    //get maximum sum
-    sum.sort((a, b) => b.compareTo(a));
-    print(sum.first);
-    return sum.first;
+    sums.sort((a, b) => a.compareTo(b));
+    return sums;
   }
+
+  static int solution01() {
+    var sums = _computeSums();
+    print(sums[0]);
+    return sums[0];
+  }
+
+  static int solution2() {
+    var sums = _computeSums();
+    var result = sums[0] + sums[1] + sums[2];
+    print(result);
+    return result;
+  }
+}
+
+void main() {
+  Day01.solution01();
+  Day01.solution2();
 }
